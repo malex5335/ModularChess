@@ -11,6 +11,14 @@ public final class BoardPosition {
 		this.y = y;
 	}
 
+	public char x() {
+		return x;
+	}
+
+	public int y() {
+		return y;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;

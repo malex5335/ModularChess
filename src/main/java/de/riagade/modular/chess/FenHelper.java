@@ -1,5 +1,7 @@
 package de.riagade.modular.chess;
 
+import de.riagade.modular.chess.pieces.*;
+
 public class FenHelper {
 	public static void loadFenSettings(Board board, String fen) {
 		if(!isValidFen(fen))
@@ -25,7 +27,7 @@ public class FenHelper {
 		var y = 8;
 		for(var pos : pieces.toCharArray()) {
 			if(Character.isDigit(pos)) {
-				x += pos;
+				x += Character.getNumericValue(pos);
 			} else if(Character.isLetter(pos)) {
 				board.createPieceAt(pos, x, y);
 				x++;
@@ -69,5 +71,9 @@ public class FenHelper {
 				count++;
 		}
 		return count;
+	}
+
+	public static Player getMyPlayer(PieceType pieceType) {
+		return Character.isUpperCase(pieceType.value) ? Player.WHITE : Player.BLACK;
 	}
 }

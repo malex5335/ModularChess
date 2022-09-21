@@ -1,10 +1,11 @@
 package de.riagade.modular.chess;
 
+import de.riagade.modular.chess.pieces.*;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import static de.riagade.modular.chess.PieceType.*;
+import static de.riagade.modular.chess.pieces.PieceType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InitialPositioningTest {
@@ -215,10 +216,26 @@ class InitialPositioningTest {
 	@Nested
 	class FromFen {
 
-		@BeforeEach
-		void setup() {
+		@Test
+		void after_white_moved() {
+			// Given
 			var fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 			board = new Board(fen);
+
+			// When
+			var positions = board.getPositions(PAWN_W);
+
+			// Then
+			assertEquals(8, positions.size());
+			assertTrue(positions.containsAll(
+					List.of(new BoardPosition('A', 2),
+							new BoardPosition('B', 2),
+							new BoardPosition('C', 2),
+							new BoardPosition('D', 2),
+							new BoardPosition('E', 4),
+							new BoardPosition('F', 2),
+							new BoardPosition('G', 2),
+							new BoardPosition('H', 2))));
 		}
 	}
 }
