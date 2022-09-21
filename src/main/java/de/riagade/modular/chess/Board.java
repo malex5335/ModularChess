@@ -31,7 +31,7 @@ public class Board {
 		var position = new BoardPosition(x, y);
 		if(getPiece(position).isPresent())
 			throw new UnsupportedOperationException("a piece already exists in this place");
-		var piece = pieceType.createPiece(position);
+		var piece = pieceType.turnIntoPieceAt(position);
 		getPieces().add(piece);
 	}
 
@@ -56,5 +56,4 @@ public class Board {
 		piece.setPosition(newPosition);
 		setPlayer(getPlayer().next());
 	}
-
 }

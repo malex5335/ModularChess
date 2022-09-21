@@ -12,10 +12,10 @@ public class Rook implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public Rook(PieceType pieceType, BoardPosition position) {
+	public Rook(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override

@@ -12,10 +12,10 @@ public class King implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public King(PieceType pieceType, BoardPosition position) {
+	public King(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override

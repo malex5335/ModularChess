@@ -12,10 +12,10 @@ public class Knight implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public Knight(PieceType pieceType, BoardPosition position) {
+	public Knight(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override

@@ -12,10 +12,10 @@ public class Bishop implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public Bishop(PieceType pieceType, BoardPosition position) {
+	public Bishop(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override

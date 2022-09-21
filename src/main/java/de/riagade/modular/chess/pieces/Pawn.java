@@ -12,10 +12,10 @@ public class Pawn implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public Pawn(PieceType pieceType, BoardPosition position) {
+	public Pawn(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override

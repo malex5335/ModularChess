@@ -23,15 +23,19 @@ public enum PieceType {
 		throw new UnsupportedOperationException("no piece found by this value");
 	}
 
-	public Piece createPiece(BoardPosition position) {
+	public Piece turnIntoPieceAt(BoardPosition position) {
 		var type = this;
 		return switch (type) {
-			case ROOK_W, ROOK_B -> new Rook(type, position);
-			case KNIGHT_W, KNIGHT_B -> new Knight(type, position);
-			case BISHOP_W, BISHOP_B -> new Bishop(type, position);
-			case QUEEN_W, QUEEN_B -> new Queen(type, position);
-			case KING_W, KING_B -> new King(type, position);
-			case PAWN_W, PAWN_B -> new Pawn(type, position);
+			case ROOK_W, ROOK_B -> new Rook(type, position, getMyPlayer());
+			case KNIGHT_W, KNIGHT_B -> new Knight(type, position, getMyPlayer());
+			case BISHOP_W, BISHOP_B -> new Bishop(type, position, getMyPlayer());
+			case QUEEN_W, QUEEN_B -> new Queen(type, position, getMyPlayer());
+			case KING_W, KING_B -> new King(type, position, getMyPlayer());
+			case PAWN_W, PAWN_B -> new Pawn(type, position, getMyPlayer());
 		};
+	}
+
+	public Player getMyPlayer() {
+		return Character.isUpperCase(getValue()) ? Player.WHITE : Player.BLACK;
 	}
 }

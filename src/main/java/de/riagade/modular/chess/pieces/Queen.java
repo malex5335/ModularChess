@@ -12,10 +12,10 @@ public class Queen implements Piece {
 	private PieceType pieceType;
 	private Player player;
 
-	public Queen(PieceType pieceType, BoardPosition position) {
+	public Queen(PieceType pieceType, BoardPosition position, Player player) {
 		setPieceType(pieceType);
 		setPosition(position);
-		setPlayer(getMyPlayer(pieceType));
+		setPlayer(player);
 	}
 
 	@Override
