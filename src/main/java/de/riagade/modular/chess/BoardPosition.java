@@ -6,7 +6,7 @@ public final class BoardPosition {
 	private final char x;
 	private final int y;
 
-	BoardPosition(char x, int y) {
+	public BoardPosition(char x, int y) {
 		this.x = x;
 		this.y = y;
 	}

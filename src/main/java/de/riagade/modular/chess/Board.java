@@ -5,43 +5,39 @@ import lombok.*;
 import java.util.*;
 import java.util.stream.*;
 
+import static de.riagade.modular.chess.FenHelper.*;
+
 @Getter
 @Setter
 public class Board {
 	public static final String INITIAL_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	private List<Piece> pieces;
+	private int halfMoves;
 	private int moves;
+	private Player player;
+	private Castling castling;
+	private EnPassant enPassant;
 
 	public Board() {
 		setMoves(0);
 		setPieces(new ArrayList<>());
-		getPieces().addAll(fromFenString(INITIAL_FEN));
+		loadFenSettings(this, INITIAL_FEN);
 	}
 
-	public List<Piece> fromFenString(String fen) {
-		var xStart = 'A';
-		var yStart = 8;
-		var x = xStart;
-		var y = yStart;
-		var pieces = new ArrayList<Piece>();
-		for(var pos : fen.toCharArray()) {
-			if(Character.isDigit(pos)) {
-				x += pos;
-			} else if(Character.isLetter(pos)) {
-				pieces.add(createPiece(pos, x, y));
-				x++;
-			} else if(pos == '/') {
-				x = xStart;
-				y--;
-			} else {
-				break;
-			}
+	public Board(String fen) {
+		setMoves(0);
+		setPieces(new ArrayList<>());
+		loadFenSettings(this, fen);
+	}
+
+	public Piece createPieceAt(char value, char x, int y) {
+		var position = new BoardPosition(x, y);
+		if(getPiece(position).isEmpty()) {
+			var piece = new Piece(PieceType.from(value), position);
+			getPieces().add(piece);
+			return piece;
 		}
-		return pieces;
-	}
-
-	private Piece createPiece(char value, char x, int y) {
-		return new Piece(PieceType.from(value), new BoardPosition(x, y));
+		throw new UnsupportedOperationException("a piece already exists in this place");
 	}
 
 	public List<BoardPosition> getPositions(PieceType pieceType) {
@@ -61,10 +57,13 @@ public class Board {
 
 	public void move(Piece piece, BoardPosition newPosition) {
 		piece.setPosition(newPosition);
-		setMoves(getMoves() + 1);
+		nextPlayer();
 	}
 
-	public Player getPlayer() {
-		return getMoves() % 2 == 0 ? Player.WHITE : Player.BLACK;
+	private void nextPlayer() {
+		switch(getPlayer()) {
+			case WHITE -> setPlayer(Player.BLACK);
+			case BLACK -> setPlayer(Player.WHITE);
+		}
 	}
 }
