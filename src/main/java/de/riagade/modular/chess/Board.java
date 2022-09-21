@@ -27,11 +27,11 @@ public class Board {
 		loadFenSettings(this, fen);
 	}
 
-	public void createPieceAt(char value, char x, int y) {
+	public void createPieceAt(PieceType pieceType, char x, int y) {
 		var position = new BoardPosition(x, y);
 		if(getPiece(position).isPresent())
 			throw new UnsupportedOperationException("a piece already exists in this place");
-		var piece = PieceType.from(value).createPiece(position);
+		var piece = pieceType.createPiece(position);
 		getPieces().add(piece);
 	}
 

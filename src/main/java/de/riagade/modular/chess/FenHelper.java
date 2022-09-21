@@ -26,7 +26,8 @@ public class FenHelper {
 			if(Character.isDigit(pos)) {
 				x += Character.getNumericValue(pos);
 			} else if(Character.isLetter(pos)) {
-				board.createPieceAt(pos, x, y);
+				var pieceType = PieceType.from(pos);
+				board.createPieceAt(pieceType, x, y);
 				x++;
 			} else if(pos == FEN_ROW_SPLITTER) {
 				x = xStart;
