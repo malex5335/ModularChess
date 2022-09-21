@@ -17,4 +17,11 @@ public enum Player {
 		}
 		throw new UnsupportedOperationException("no piece found by this value");
 	}
+
+	public Player next() {
+		return switch(this) {
+			case WHITE -> Player.BLACK;
+			case BLACK -> Player.WHITE;
+		};
+	}
 }

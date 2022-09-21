@@ -23,10 +23,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			board.move(pawn, to);
 
 			// Then
-			assertTrue(moved);
+			assertEquals(to, pawn.getPosition());
 		}
 
 		@Test
@@ -37,11 +37,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			board.move(pawn, to);
 
 			// Then
-			assertTrue(moved);
-
+			assertEquals(to, pawn.getPosition());
 		}
 
 		@Test
@@ -54,10 +53,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
 
 			// Then
-			assertFalse(moved);
+			assertEquals(from, pawn.getPosition());
 		}
 
 		@Test
@@ -68,10 +67,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
 
 			// Then
-			assertFalse(moved);
+			assertEquals(from, pawn.getPosition());
 		}
 
 		@Test
@@ -82,10 +81,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
 
 			// Then
-			assertFalse(moved);
+			assertEquals(from, pawn.getPosition());
 		}
 
 		@Test
@@ -98,10 +97,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			board.move(pawn, to);
 
 			// Then
-			assertTrue(moved);
+			assertEquals(to, pawn.getPosition());
 		}
 
 		@Test
@@ -114,10 +113,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
 
 			// Then
-			assertFalse(moved);
+			assertEquals(from, pawn.getPosition());
 		}
 
 		@Test
@@ -128,10 +127,10 @@ public class PieceMovementTest {
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
-			var moved = board.move(pawn, to);
+			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
 
 			// Then
-			assertFalse(moved);
+			assertEquals(from, pawn.getPosition());
 		}
 	}
 }
