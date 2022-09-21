@@ -3,22 +3,19 @@ package de.riagade.modular.chess;
 import de.riagade.modular.chess.pieces.*;
 
 public class FenHelper {
+	public static final char FEN_PART_SPLITTER = ' ';
+	public static final char FEN_ROW_SPLITTER = '/';
+
 	public static void loadFenSettings(Board board, String fen) {
 		if(!isValidFen(fen))
 			return;
-		var fenParts = fen.split(" ");
-		var pieces = fenParts[0];
-		var player = fenParts[1];
-		var castling = fenParts[2];
-		var enPassant = fenParts[3];
-		var halfMoves = fenParts[4];
-		var moves = fenParts[5];
-		setPiecesFromFen(board, pieces);
-		setPlayerFromFen(board, player);
-		setCastlingFromFen(board, castling);
-		setEnPassantFromFen(board, enPassant);
-		setHalfMovesFromFen(board, halfMoves);
-		setMovesFromFen(board, moves);
+		var fenParts = fen.split(String.valueOf(FEN_PART_SPLITTER));
+		setPiecesFromFen(board, fenParts[0]);
+		setPlayerFromFen(board, fenParts[1]);
+		setCastlingFromFen(board, fenParts[2]);
+		setEnPassantFromFen(board, fenParts[3]);
+		setHalfMovesFromFen(board, fenParts[4]);
+		setMovesFromFen(board, fenParts[5]);
 	}
 
 	private static void setPiecesFromFen(Board board, String pieces) {
@@ -31,7 +28,7 @@ public class FenHelper {
 			} else if(Character.isLetter(pos)) {
 				board.createPieceAt(pos, x, y);
 				x++;
-			} else if(pos == '/') {
+			} else if(pos == FEN_ROW_SPLITTER) {
 				x = xStart;
 				y--;
 			} else {
@@ -41,8 +38,8 @@ public class FenHelper {
 	}
 
 	private static boolean isValidFen(String fen) {
-		var slashes = count(fen, '/');
-		var spaces = count(fen, ' ');
+		var slashes = count(fen, FEN_ROW_SPLITTER);
+		var spaces = count(fen, FEN_PART_SPLITTER);
 		return slashes == 7 && spaces == 5;
 	}
 
@@ -74,6 +71,6 @@ public class FenHelper {
 	}
 
 	public static Player getMyPlayer(PieceType pieceType) {
-		return Character.isUpperCase(pieceType.value) ? Player.WHITE : Player.BLACK;
+		return Character.isUpperCase(pieceType.getValue()) ? Player.WHITE : Player.BLACK;
 	}
 }
