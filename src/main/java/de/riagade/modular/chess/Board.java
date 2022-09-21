@@ -17,7 +17,7 @@ public class Board {
 	private int moves;
 	private Player player;
 	private Castling castling;
-	private EnPassant enPassant;
+	private BoardPosition enPassant;
 
 	public Board() {
 		this(INITIAL_FEN);

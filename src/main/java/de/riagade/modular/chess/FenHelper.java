@@ -52,6 +52,11 @@ public class FenHelper {
 	}
 
 	private static void setEnPassantFromFen(Board board, String enPassant) {
+		if(enPassant.length() < 2)
+			return;
+		var x = Character.toUpperCase(enPassant.charAt(0));
+		var y = enPassant.charAt(1);
+		board.setEnPassant(new BoardPosition(x, y));
 	}
 
 	private static void setHalfMovesFromFen(Board board, String halfMoves) {
@@ -69,9 +74,5 @@ public class FenHelper {
 				count++;
 		}
 		return count;
-	}
-
-	public static Player getMyPlayer(PieceType pieceType) {
-		return Character.isUpperCase(pieceType.getValue()) ? Player.WHITE : Player.BLACK;
 	}
 }
