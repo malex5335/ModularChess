@@ -132,5 +132,21 @@ public class PieceMovementTest {
 			// Then
 			assertEquals(from, pawn.getPosition());
 		}
+
+		@Test
+		void take_enPassant() {
+			// Given
+			var fen = "rnbqkbnr/pp1ppppp/8/8/2pP4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 2";
+			board = new Board(fen);
+			var from = new BoardPosition('C', 4);
+			var to = new BoardPosition('D', 3);
+			var pawn = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(pawn, to);
+
+			// Then
+			assertEquals(to, pawn.getPosition());
+		}
 	}
 }
