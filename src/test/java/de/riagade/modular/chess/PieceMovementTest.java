@@ -30,7 +30,7 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void move2Fields() {
+		void move2Fields_atFirst() {
 			// Given
 			var from = new BoardPosition('E', 2);
 			var to = new BoardPosition('E', 4);
@@ -44,7 +44,7 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void move2Fields_afterAlreadyMoved() {
+		void move2Fields_notAfterAlreadyMoved() {
 			// Given
 			var fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2";
 			board = new Board(fen);
@@ -60,7 +60,7 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void move3Fields() {
+		void cantMove3Fields() {
 			// Given
 			var from = new BoardPosition('E', 2);
 			var to = new BoardPosition('E', 5);
@@ -74,7 +74,7 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void moveSideways() {
+		void cantMoveSideways() {
 			// Given
 			var from = new BoardPosition('E', 2);
 			var to = new BoardPosition('D', 3);
@@ -88,7 +88,7 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void moveSideways_taking() {
+		void takeSideways() {
 			// Given
 			var fen = "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2";
 			board = new Board(fen);
@@ -104,26 +104,12 @@ public class PieceMovementTest {
 		}
 
 		@Test
-		void moveBackwards_fieldClear() {
+		void cantMoveBackwards() {
 			// Given
 			var fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2";
 			board = new Board(fen);
 			var from = new BoardPosition('E', 4);
 			var to = new BoardPosition('E', 3);
-			var pawn = board.getPiece(from).orElseThrow();
-
-			// When
-			assertThrows(UnsupportedOperationException.class, () -> board.move(pawn, to));
-
-			// Then
-			assertEquals(from, pawn.getPosition());
-		}
-
-		@Test
-		void moveBackwards_fieldBlocked() {
-			// Given
-			var from = new BoardPosition('E', 2);
-			var to = new BoardPosition('E', 1);
 			var pawn = board.getPiece(from).orElseThrow();
 
 			// When
