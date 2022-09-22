@@ -53,7 +53,13 @@ public class Board {
 			throw new UnsupportedOperationException("only the player controlling the piece is allowed to move it");
 		if(!piece.canMove(newPosition, this))
 			throw new UnsupportedOperationException("piece cannot be moved to this position");
+		runTakeLogic(newPosition);
 		piece.setPosition(newPosition);
 		setPlayer(getPlayer().next());
+	}
+
+	private void runTakeLogic(BoardPosition newPosition) {
+		var potentialPiece = getPiece(newPosition);
+		potentialPiece.ifPresent(value -> getPieces().remove(value));
 	}
 }

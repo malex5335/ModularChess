@@ -3,8 +3,6 @@ package de.riagade.modular.chess.pieces;
 import de.riagade.modular.chess.*;
 import lombok.*;
 
-import static de.riagade.modular.chess.FenHelper.*;
-
 @Getter
 @Setter
 public class Pawn implements Piece {
@@ -24,7 +22,8 @@ public class Pawn implements Piece {
 			neverMoveBackwards(newPosition);
 			noMoreThanTwo(newPosition);
 			jumpOnlyFistTime(newPosition);
-			diagonalOnlyForTakeOrEnPassant(board, newPosition);
+			if(!regularTake(board, newPosition) && !isEnPassant(board, newPosition))
+				dontAllowDiagonalMovement(newPosition);
 			return true;
 		} catch (UnsupportedOperationException e) {
 			return false;
@@ -59,32 +58,38 @@ public class Pawn implements Piece {
 			throw new UnsupportedOperationException("can only move 2 spaces on the first move");
 	}
 
-	private void diagonalOnlyForTakeOrEnPassant(Board board, BoardPosition newPosition) throws UnsupportedOperationException {
-		var fromX = getPosition().x();
-		var toX = newPosition.x();
-		var moveDiagonal = fromX != toX;
-		if(!moveDiagonal)
-			return;
-		if(isEnPassant(board, newPosition))
-			return;
+	private boolean regularTake(Board board, BoardPosition newPosition) throws UnsupportedOperationException {
+		if(!movesDiagonal(newPosition))
+			return false;
 		var optionalEncounter = board.getPiece(newPosition);
 		if(optionalEncounter.isPresent()) {
 			var opponent = optionalEncounter.get().getPlayer();
 			if(getPlayer().equals(opponent))
 				throw new UnsupportedOperationException("cannot take own piece");
-		} else {
-			throw new UnsupportedOperationException("cannot move diagonally");
+			return true;
 		}
+		return false;
 	}
 
 	private boolean isEnPassant(Board board, BoardPosition newPosition) {
-		var currentPos = getPosition();
-		var correctField = board.getEnPassant().equals(newPosition);
-		var correctMoveDirection = switch (getPlayer()) {
-			case WHITE -> (currentPos.y() + 1) == newPosition.y();
-			case BLACK -> (currentPos.y() - 1) == newPosition.y();
-		};
-		return correctField && correctMoveDirection && xNextTo(newPosition);
+		var fromY = getPosition().y();
+		var toY = newPosition.y();
+		var correctMoveDirection = fromY + getPlayerDirection() == toY;
+		var correctField = newPosition.equals(board.getEnPassant());
+		return correctMoveDirection && correctField && xNextTo(newPosition);
+	}
+
+	private void dontAllowDiagonalMovement(BoardPosition newPosition) throws UnsupportedOperationException {
+		if(movesDiagonal(newPosition))
+			throw new UnsupportedOperationException("cannot move diagonally");
+	}
+
+	private boolean movesDiagonal(BoardPosition newPosition) {
+		var fromY = getPosition().y();
+		var toY = newPosition.y();
+		var moveHorizontal = fromY + getPlayerDirection() == toY;
+		var moveVertical = xNextTo(newPosition);
+		return moveHorizontal && moveVertical;
 	}
 
 	private boolean xNextTo(BoardPosition newPosition) {
@@ -99,6 +104,13 @@ public class Pawn implements Piece {
 		return switch(getPlayer()) {
 			case WHITE -> toY - fromY;
 			case BLACK -> fromY - toY;
+		};
+	}
+
+	private int getPlayerDirection() {
+		return switch (getPlayer()) {
+			case WHITE -> 1;
+			case BLACK -> -1;
 		};
 	}
 }
