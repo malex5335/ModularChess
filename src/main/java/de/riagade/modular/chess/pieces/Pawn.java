@@ -24,7 +24,7 @@ public class Pawn implements Piece {
 			neverMoveBackwards(newPosition);
 			noMoreThanTwo(newPosition);
 			jumpOnlyFistTime(newPosition);
-			diagonalOnlyForTake(board, newPosition);
+			diagonalOnlyForTakeOrEnPassant(board, newPosition);
 			return true;
 		} catch (UnsupportedOperationException e) {
 			return false;
@@ -59,11 +59,13 @@ public class Pawn implements Piece {
 			throw new UnsupportedOperationException("can only move 2 spaces on the first move");
 	}
 
-	private void diagonalOnlyForTake(Board board, BoardPosition newPosition) throws UnsupportedOperationException {
+	private void diagonalOnlyForTakeOrEnPassant(Board board, BoardPosition newPosition) throws UnsupportedOperationException {
 		var fromX = getPosition().x();
 		var toX = newPosition.x();
 		var moveDiagonal = fromX != toX;
 		if(!moveDiagonal)
+			return;
+		if(isEnPassant(board, newPosition))
 			return;
 		var optionalEncounter = board.getPiece(newPosition);
 		if(optionalEncounter.isPresent()) {
@@ -73,6 +75,22 @@ public class Pawn implements Piece {
 		} else {
 			throw new UnsupportedOperationException("cannot move diagonally");
 		}
+	}
+
+	private boolean isEnPassant(Board board, BoardPosition newPosition) {
+		var currentPos = getPosition();
+		var correctField = board.getEnPassant().equals(newPosition);
+		var correctMoveDirection = switch (getPlayer()) {
+			case WHITE -> (currentPos.y() + 1) == newPosition.y();
+			case BLACK -> (currentPos.y() - 1) == newPosition.y();
+		};
+		return correctField && correctMoveDirection && xNextTo(newPosition);
+	}
+
+	private boolean xNextTo(BoardPosition newPosition) {
+		var sourceX = getPosition().x();
+		var targetX = newPosition.x();
+		return sourceX == targetX + 1 || sourceX == targetX - 1;
 	}
 
 	private int stepsTo(BoardPosition newPosition) {

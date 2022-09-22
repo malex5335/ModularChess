@@ -55,7 +55,7 @@ public class FenHelper {
 		if(enPassant.length() < 2)
 			return;
 		var x = Character.toUpperCase(enPassant.charAt(0));
-		var y = enPassant.charAt(1);
+		var y = Character.getNumericValue(enPassant.charAt(1));
 		board.setEnPassant(new BoardPosition(x, y));
 	}
 
