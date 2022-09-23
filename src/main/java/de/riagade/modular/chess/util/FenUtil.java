@@ -1,14 +1,15 @@
-package de.riagade.modular.chess;
+package de.riagade.modular.chess.util;
 
-import de.riagade.modular.chess.pieces.*;
+import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.util.*;
 
-public class FenHelper {
+public class FenUtil {
 	public static final char FEN_PART_SPLITTER = ' ';
 	public static final char FEN_ROW_SPLITTER = '/';
 
 	public static void loadFenSettings(Board board, String fen) {
 		if(!isValidFen(fen))
-			return;
+			throw new IllegalArgumentException("the fen string seems to be invalid");
 		var fenParts = fen.split(String.valueOf(FEN_PART_SPLITTER));
 		setPiecesFromFen(board, fenParts[0]);
 		setPlayerFromFen(board, fenParts[1]);
@@ -16,6 +17,12 @@ public class FenHelper {
 		setEnPassantFromFen(board, fenParts[3]);
 		setHalfMovesFromFen(board, fenParts[4]);
 		setMovesFromFen(board, fenParts[5]);
+	}
+
+	private static boolean isValidFen(String fen) {
+		var slashes = count(fen, FEN_ROW_SPLITTER);
+		var spaces = count(fen, FEN_PART_SPLITTER);
+		return slashes == 7 && spaces == 5;
 	}
 
 	private static void setPiecesFromFen(Board board, String pieces) {
@@ -36,12 +43,6 @@ public class FenHelper {
 				break;
 			}
 		}
-	}
-
-	private static boolean isValidFen(String fen) {
-		var slashes = count(fen, FEN_ROW_SPLITTER);
-		var spaces = count(fen, FEN_PART_SPLITTER);
-		return slashes == 7 && spaces == 5;
 	}
 
 	private static void setPlayerFromFen(Board board, String player) {

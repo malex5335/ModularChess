@@ -1,11 +1,11 @@
 package de.riagade.modular.chess;
 
-import de.riagade.modular.chess.pieces.*;
+import de.riagade.modular.chess.pieces.util.*;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import static de.riagade.modular.chess.pieces.PieceType.*;
+import static de.riagade.modular.chess.pieces.util.PieceType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InitialPositioningTest {

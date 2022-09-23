@@ -1,6 +1,7 @@
-package de.riagade.modular.chess.pieces;
+package de.riagade.modular.chess.pieces.util;
 
 import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.*;
 import lombok.*;
 
 @Getter

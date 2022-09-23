@@ -15,7 +15,7 @@ public enum Player {
 				return player;
 			}
 		}
-		throw new UnsupportedOperationException("no piece found by this value");
+		throw new IllegalArgumentException("no piece found by this value");
 	}
 
 	public Player next() {

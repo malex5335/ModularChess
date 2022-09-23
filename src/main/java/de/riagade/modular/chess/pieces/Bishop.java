@@ -1,9 +1,8 @@
 package de.riagade.modular.chess.pieces;
 
 import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
-
-import static de.riagade.modular.chess.FenHelper.*;
 
 @Getter
 @Setter

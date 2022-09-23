@@ -1,12 +1,12 @@
 package de.riagade.modular.chess;
 
-import de.riagade.modular.chess.pieces.*;
+import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
 import java.util.*;
 import java.util.stream.*;
 
-import static de.riagade.modular.chess.FenHelper.*;
+import static de.riagade.modular.chess.util.FenUtil.*;
 
 @Getter
 @Setter
@@ -18,6 +18,7 @@ public class Board {
 	private Player player;
 	private Castling castling;
 	private BoardPosition enPassant;
+	private List<BoardPosition> allPositions;
 
 	public Board() {
 		this(INITIAL_FEN);
@@ -25,6 +26,7 @@ public class Board {
 
 	public Board(String fen) {
 		loadFenSettings(this, fen);
+		generatePositions();
 	}
 
 	public void createPieceAt(PieceType pieceType, char x, int y) {
@@ -51,7 +53,7 @@ public class Board {
 	public void move(Piece piece, BoardPosition newPosition) {
 		if(!piece.getPlayer().equals(getPlayer()))
 			throw new UnsupportedOperationException("only the player controlling the piece is allowed to move it");
-		if(!piece.canMove(newPosition, this))
+		if(!piece.getPossibleMoves(this).contains(newPosition))
 			throw new UnsupportedOperationException("piece cannot be moved to this position");
 		runTakeLogic(newPosition);
 		piece.setPosition(newPosition);
@@ -62,4 +64,15 @@ public class Board {
 		var potentialPiece = getPiece(newPosition);
 		potentialPiece.ifPresent(value -> getPieces().remove(value));
 	}
+
+	private void generatePositions() {
+		setAllPositions(new ArrayList<>());
+		for(var x = 'A'; x <= 'H'; x++) {
+			for(var y = 1; y <= 8; y++) {
+				var position = new BoardPosition(x,y);
+				getAllPositions().add(position);
+			}
+		}
+	}
+
 }
