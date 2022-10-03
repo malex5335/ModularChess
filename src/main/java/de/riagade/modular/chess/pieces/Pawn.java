@@ -30,9 +30,9 @@ public class Pawn implements Piece {
 			rules.jumpOnlyFistTime(newPosition);
 			if(!rules.regularTake(board, newPosition) && !rules.isEnPassant(board, newPosition))
 				rules.dontAllowDiagonalMovement(newPosition);
-			return true;
 		} catch (UnsupportedOperationException e) {
 			return false;
 		}
+		return true;
 	}
 }

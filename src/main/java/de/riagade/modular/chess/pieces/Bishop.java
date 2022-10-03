@@ -28,9 +28,9 @@ public class Bishop implements Piece {
 			notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.onlyAllowDiagonal(newPosition);
 			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
-			return true;
 		} catch(UnsupportedOperationException e) {
 			return false;
 		}
+		return true;
 	}
 }

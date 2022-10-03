@@ -483,4 +483,164 @@ public class PieceMovementTest {
 			assertEquals(from, queen.getPosition());
 		}
 	}
+
+	@Nested
+	class King {
+		BoardPosition from;
+
+		@BeforeEach
+		void setup() {
+			var fen = "8/8/8/8/8/8/1K6/8 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('B', 2);
+		}
+
+		@Test
+		void up() {
+			//Given
+			var king = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition(from.x(), from.y()+1);
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void down() {
+			//Given
+			var king = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition(from.x(), from.y() - 1);
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void left() {
+			//Given
+			var king = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition((char) (from.x() - 1), from.y());
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void right() {
+			//Given
+			var king = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition((char) (from.x() + 1), from.y());
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void moveLeftUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 1), from.y() + 1);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void moveLeftDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 1), from.y() - 1);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+		@Test
+		void moveRightUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 1), from.y() + 1);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void moveRightDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 1), from.y() - 1);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void take() {
+			var fen = "8/8/8/8/8/8/r7/K7 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('A', 1);
+			var to = new BoardPosition('A', 2);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(king, to);
+
+			// Then
+			assertEquals(to, king.getPosition());
+		}
+
+		@Test
+		void blocked() {
+			//Given
+			board = new Board();
+			from = new BoardPosition('E', 1);
+			var to = new BoardPosition('E', 2);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			assertThrows(UnsupportedOperationException.class, () -> board.move(king, to));
+
+			// Then
+			assertEquals(from, king.getPosition());
+		}
+
+		@Test
+		void notMoreThan1() {
+			var fen = "8/8/8/8/8/8/8/K7 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('A', 1);
+			var to = new BoardPosition('A', 3);
+			var king = board.getPiece(from).orElseThrow();
+
+			// When
+			assertThrows(UnsupportedOperationException.class, () -> board.move(king, to));
+
+			// Then
+			assertEquals(from, king.getPosition());
+		}
+	}
 }

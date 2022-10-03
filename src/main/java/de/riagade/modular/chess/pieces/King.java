@@ -1,8 +1,13 @@
 package de.riagade.modular.chess.pieces;
 
 import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
+import de.riagade.modular.chess.rules.*;
 import lombok.*;
+
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
+import static de.riagade.modular.chess.pieces.util.PathFinder.shortestPathBetween;
 
 @Getter
 @Setter
@@ -19,6 +24,14 @@ public class King implements Piece {
 
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
-		return false;
+		var rules = new KingRules(this);
+		try {
+			notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			rules.onlyOneField(newPosition);
+			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
+		} catch (UnsupportedOperationException e) {
+			return false;
+		}
+		return true;
 	}
 }

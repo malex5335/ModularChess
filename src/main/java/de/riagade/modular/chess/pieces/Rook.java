@@ -28,9 +28,9 @@ public class Rook implements Piece {
 			notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.onlyAllowLinear(newPosition);
 			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
-			return true;
 		} catch (UnsupportedOperationException e) {
 			return false;
 		}
+		return true;
 	}
 }
