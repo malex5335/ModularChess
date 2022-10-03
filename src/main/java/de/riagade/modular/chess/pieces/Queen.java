@@ -19,6 +19,8 @@ public class Queen implements Piece {
 
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
-		return false;
+		var ghostRook = new Rook(getPieceType(), getPosition(), getPlayer());
+		var ghostBishop = new Bishop(getPieceType(), getPosition(), getPlayer());
+		return ghostRook.canMove(newPosition, board) || ghostBishop.canMove(newPosition, board);
 	}
 }
