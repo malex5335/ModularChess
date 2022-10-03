@@ -5,6 +5,9 @@ import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
+import static de.riagade.modular.chess.pieces.util.PathFinder.shortestPathBetween;
+
 @Getter
 @Setter
 public class Bishop implements Piece {
@@ -21,11 +24,10 @@ public class Bishop implements Piece {
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
 		var rules = new BishopRules(this);
-		var generalRules = new GeneralRules(this);
 		try {
-			generalRules.notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.onlyAllowDiagonal(newPosition);
-			rules.noPieceBetween(newPosition, board);
+			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
 			return true;
 		} catch(UnsupportedOperationException e) {
 			return false;

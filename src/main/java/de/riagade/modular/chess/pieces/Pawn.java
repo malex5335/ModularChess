@@ -5,6 +5,8 @@ import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.notOccupiedByOwnPiece;
+
 @Getter
 @Setter
 public class Pawn implements Piece {
@@ -21,9 +23,8 @@ public class Pawn implements Piece {
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
 		var rules = new PawnRules(this);
-		var generalRules = new GeneralRules(this);
 		try {
-			generalRules.notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.neverMoveBackwards(newPosition);
 			rules.noMoreThanTwo(newPosition);
 			rules.jumpOnlyFistTime(newPosition);

@@ -1,8 +1,12 @@
 package de.riagade.modular.chess.pieces;
 
 import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
+
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
+import static de.riagade.modular.chess.pieces.util.PathFinder.shortestPathBetween;
 
 @Getter
 @Setter
@@ -19,6 +23,14 @@ public class Rook implements Piece {
 
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
-		return false;
+		var rules = new RookRules(this);
+		try {
+			notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			rules.onlyAllowLinear(newPosition);
+			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
+			return true;
+		} catch (UnsupportedOperationException e) {
+			return false;
+		}
 	}
 }

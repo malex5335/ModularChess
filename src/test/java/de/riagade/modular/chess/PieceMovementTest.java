@@ -235,4 +235,111 @@ public class PieceMovementTest {
 			assertEquals(to, bishop.getPosition());
 		}
 	}
+
+	@Nested
+	class Rook {
+		BoardPosition from;
+
+		@BeforeEach
+		void setup() {
+			var fen = "8/8/8/8/8/8/1R6/8 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('B', 2);
+		}
+
+		@Test
+		void up() {
+			//Given
+			var rook = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition(from.x(), from.y()+1);
+
+			// When
+			board.move(rook, to);
+
+			// Then
+			assertEquals(to, rook.getPosition());
+		}
+
+		@Test
+		void down() {
+			//Given
+			var rook = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition(from.x(), from.y() - 1);
+
+			// When
+			board.move(rook, to);
+
+			// Then
+			assertEquals(to, rook.getPosition());
+		}
+
+		@Test
+		void left() {
+			//Given
+			var rook = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition((char) (from.x() - 1), from.y());
+
+			// When
+			board.move(rook, to);
+
+			// Then
+			assertEquals(to, rook.getPosition());
+		}
+
+		@Test
+		void right() {
+			//Given
+			var rook = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition((char) (from.x() + 1), from.y());
+
+			// When
+			board.move(rook, to);
+
+			// Then
+			assertEquals(to, rook.getPosition());
+		}
+
+		@Test
+		void take() {
+			var fen = "r7/8/8/8/8/8/8/R7 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('A', 1);
+			var to = new BoardPosition('A', 8);
+			var rook = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(rook, to);
+
+			// Then
+			assertEquals(to, rook.getPosition());
+		}
+
+		@Test
+		void blocked() {
+			//Given
+			board = new Board();
+			from = new BoardPosition('A', 1);
+			var to = new BoardPosition('A', 2);
+			var rook = board.getPiece(from).orElseThrow();
+
+			// When
+			assertThrows(UnsupportedOperationException.class, () -> board.move(rook, to));
+
+			// Then
+			assertEquals(from, rook.getPosition());
+		}
+
+		@Test
+		void notDiagonal() {
+			//Given
+			var rook = board.getPiece(from).orElseThrow();
+			var to = new BoardPosition((char) (from.x() + 1), from.y() + 1);
+
+			// When
+			assertThrows(UnsupportedOperationException.class, () -> board.move(rook, to));
+
+			// Then
+			assertEquals(from, rook.getPosition());
+		}
+	}
 }
