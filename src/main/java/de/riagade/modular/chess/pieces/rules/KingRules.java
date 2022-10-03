@@ -1,4 +1,4 @@
-package de.riagade.modular.chess.rules;
+package de.riagade.modular.chess.pieces.rules;
 
 import de.riagade.modular.chess.*;
 import de.riagade.modular.chess.pieces.*;

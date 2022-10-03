@@ -3,7 +3,6 @@ package de.riagade.modular.chess.pieces;
 import de.riagade.modular.chess.*;
 import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
-import de.riagade.modular.chess.rules.*;
 import lombok.*;
 
 import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
