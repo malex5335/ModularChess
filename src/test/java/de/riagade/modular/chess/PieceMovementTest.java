@@ -138,69 +138,65 @@ public class PieceMovementTest {
 
 	@Nested
 	class Bishop {
+		@BeforeEach
+		void setup() {
+			var fen = "8/8/8/8/8/8/3B4/8 w KQkq - 0 1";
+			board = new Board(fen);
+		}
 
-		@Nested
-		class RegularMovement {
-			@BeforeEach
-			void setup() {
-				var fen = "8/8/8/8/8/8/3B4/8 w KQkq - 0 1";
-				board = new Board(fen);
-			}
+		@Test
+		void moveLeftUp() {
+			// Given
+			var from = new BoardPosition('D', 2);
+			var to = new BoardPosition('C', 3);
+			var bishop = board.getPiece(from).orElseThrow();
 
-			@Test
-			void moveLeftUp() {
-				// Given
-				var from = new BoardPosition('D', 2);
-				var to = new BoardPosition('C', 3);
-				var bishop = board.getPiece(from).orElseThrow();
+			// When
+			board.move(bishop, to);
 
-				// When
-				board.move(bishop, to);
+			// Then
+			assertEquals(to, bishop.getPosition());
+		}
 
-				// Then
-				assertEquals(to, bishop.getPosition());
-			}
+		@Test
+		void moveLeftDown() {
+			// Given
+			var from = new BoardPosition('D', 2);
+			var to = new BoardPosition('C', 1);
+			var bishop = board.getPiece(from).orElseThrow();
 
-			@Test
-			void moveLeftDown() {
-				// Given
-				var from = new BoardPosition('D', 2);
-				var to = new BoardPosition('C', 1);
-				var bishop = board.getPiece(from).orElseThrow();
+			// When
+			board.move(bishop, to);
 
-				// When
-				board.move(bishop, to);
+			// Then
+			assertEquals(to, bishop.getPosition());
+		}
+		@Test
+		void moveRightUp() {
+			// Given
+			var from = new BoardPosition('D', 2);
+			var to = new BoardPosition('E', 3);
+			var bishop = board.getPiece(from).orElseThrow();
 
-				// Then
-				assertEquals(to, bishop.getPosition());
-			}
-			@Test
-			void moveRightUp() {
-				// Given
-				var from = new BoardPosition('D', 2);
-				var to = new BoardPosition('E', 3);
-				var bishop = board.getPiece(from).orElseThrow();
+			// When
+			board.move(bishop, to);
 
-				// When
-				board.move(bishop, to);
+			// Then
+			assertEquals(to, bishop.getPosition());
+		}
 
-				// Then
-				assertEquals(to, bishop.getPosition());
-			}
+		@Test
+		void moveRightDown() {
+			// Given
+			var from = new BoardPosition('D', 2);
+			var to = new BoardPosition('E', 1);
+			var bishop = board.getPiece(from).orElseThrow();
 
-			@Test
-			void moveRightDown() {
-				// Given
-				var from = new BoardPosition('D', 2);
-				var to = new BoardPosition('E', 1);
-				var bishop = board.getPiece(from).orElseThrow();
+			// When
+			board.move(bishop, to);
 
-				// When
-				board.move(bishop, to);
-
-				// Then
-				assertEquals(to, bishop.getPosition());
-			}
+			// Then
+			assertEquals(to, bishop.getPosition());
 		}
 
 		@Test
