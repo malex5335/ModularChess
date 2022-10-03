@@ -6,7 +6,7 @@ import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
 import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
-import static de.riagade.modular.chess.pieces.util.PathFinder.shortestPathBetween;
+import static de.riagade.modular.chess.util.PositionUtil.*;
 
 @Getter
 @Setter
