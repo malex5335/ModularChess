@@ -643,4 +643,150 @@ public class PieceMovementTest {
 			assertEquals(from, king.getPosition());
 		}
 	}
+
+	@Nested
+	class Knight {
+		BoardPosition from;
+		@BeforeEach
+		void setup() {
+			var fen = "8/8/8/8/3N4/8/8/8 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('D', 4);
+		}
+
+		@Test
+		void moveLeftUpUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 1), from.y() + 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveLeftUpDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 2), from.y() + 1);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+		@Test
+		void moveLeftDownUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 2), from.y() - 1);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveLeftDownDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() - 1), from.y() - 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveRightDownDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 1), from.y() - 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveRightDownUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 2), from.y() - 1);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveRightUpDown() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 2), from.y() + 1);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void moveRightUpUp() {
+			// Given
+			var to = new BoardPosition((char) (from.x() + 1), from.y() + 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+
+		@Test
+		void movementBlocked() {
+			// Given
+			var fen = "8/8/4P3/8/3N4/8/8/8 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('D', 4);
+			var to = new BoardPosition((char) (from.x() + 1), from.y() + 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			assertThrows(UnsupportedOperationException.class, () -> board.move(knight, to));
+
+			// Then
+			assertEquals(from, knight.getPosition());
+		}
+
+		@Test
+		void takeEnemy() {
+			// Given
+			var fen = "8/8/4p3/8/3N4/8/8/8 w KQkq - 0 1";
+			board = new Board(fen);
+			from = new BoardPosition('D', 4);
+			var to = new BoardPosition((char) (from.x() + 1), from.y() + 2);
+			var knight = board.getPiece(from).orElseThrow();
+
+			// When
+			board.move(knight, to);
+
+			// Then
+			assertEquals(to, knight.getPosition());
+		}
+	}
 }
