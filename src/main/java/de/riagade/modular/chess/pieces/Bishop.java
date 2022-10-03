@@ -1,6 +1,7 @@
 package de.riagade.modular.chess.pieces;
 
 import de.riagade.modular.chess.*;
+import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
@@ -19,6 +20,15 @@ public class Bishop implements Piece {
 
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
-		return false;
+		var rules = new BishopRules(this);
+		var generalRules = new GeneralRules(this);
+		try {
+			generalRules.notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			rules.onlyAllowDiagonal(newPosition);
+			rules.noPieceBetween(newPosition, board);
+			return true;
+		} catch(UnsupportedOperationException e) {
+			return false;
+		}
 	}
 }

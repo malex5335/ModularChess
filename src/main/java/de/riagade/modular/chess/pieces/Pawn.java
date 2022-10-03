@@ -21,7 +21,9 @@ public class Pawn implements Piece {
 	@Override
 	public boolean canMove(BoardPosition newPosition, Board board) {
 		var rules = new PawnRules(this);
+		var generalRules = new GeneralRules(this);
 		try {
+			generalRules.notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.neverMoveBackwards(newPosition);
 			rules.noMoreThanTwo(newPosition);
 			rules.jumpOnlyFistTime(newPosition);
