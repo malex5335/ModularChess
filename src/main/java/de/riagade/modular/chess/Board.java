@@ -75,10 +75,21 @@ public class Board {
 		}
 	}
 
-	public boolean isRunning() {
-		// TODO: test the winning condition
-		// draw: no free spaces available that would not result in a take from the other player
-		// loose: will get taken next turn if I don't move + draw
-		return true;
+	public boolean isCheckMate() {
+		// TODO: ...
+		return false;
+	}
+
+	public boolean isCheck() {
+		// TODO: ...
+		return false;
+	}
+
+	public boolean isStaleMate() {
+		return false;
+	}
+
+	public Player getWinner() {
+		return getPlayer();
 	}
 }
