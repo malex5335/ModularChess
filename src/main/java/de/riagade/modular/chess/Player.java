@@ -1,7 +1,7 @@
 package de.riagade.modular.chess;
 
 public enum Player {
-	WHITE('w'), BLACK('b');
+	WHITE('w'), BLACK('b'), NO_ONE('x');
 
 	final char value;
 
@@ -19,9 +19,6 @@ public enum Player {
 	}
 
 	public Player next() {
-		return switch(this) {
-			case WHITE -> Player.BLACK;
-			case BLACK -> Player.WHITE;
-		};
+		return this.equals(WHITE) ? Player.BLACK : Player.WHITE;
 	}
 }

@@ -124,4 +124,21 @@ public class Board {
 		}
 	}
 
+	public boolean isCheckMate() {
+		// TODO: ...
+		return false;
+	}
+
+	public boolean isCheck() {
+		// TODO: ...
+		return false;
+	}
+
+	public boolean isStaleMate() {
+		return false;
+	}
+
+	public Player getWinner() {
+		return getPlayer();
+	}
 }
