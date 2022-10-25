@@ -21,8 +21,15 @@ public class KingRules {
 	}
 
 	public void cantCheckSelf(BoardPosition newPosition, Board board) {
-		if(board.isCheckAt(newPosition))
-			throw new UnsupportedOperationException("you cant set yourself into check mate");
+		/*
+		 * the king has a movement radius of 1 and therefore can not directly check the other king
+		 * that's why we remove this piece from our calculation to check weather a king will be
+		 * checked if moved to the desired position
+		 */
+		if(getPlayer().equals(board.getPlayer())) {
+			if (board.isCheckAt(newPosition))
+				throw new UnsupportedOperationException("you cant set yourself into check mate");
+		}
 	}
 
 	public void oneFieldOrCastling(BoardPosition newPosition, Board board) {
