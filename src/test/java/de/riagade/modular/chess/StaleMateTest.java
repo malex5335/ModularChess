@@ -6,6 +6,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StaleMateTest {
 
+	@Test
+	void roundStart() {
+		// Given
+		var board = new Board();
+
+		// When
+		var staleMated = board.isStaleMate();
+
+		// Then
+		assertFalse(staleMated);
+	}
+
 
 	@Test
 	void whiteInStaleMate() {

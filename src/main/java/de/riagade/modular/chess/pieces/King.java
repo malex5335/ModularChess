@@ -28,7 +28,12 @@ public class King implements Piece {
 			notOccupiedByOwnPiece(newPosition, board, getPlayer());
 			rules.oneFieldOrCastling(newPosition, board);
 			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
-			rules.cantCheckSelf(newPosition, board);
+			/*
+			 * We don't need to check if the King would self check in the enemies move.
+			 * This also prevents a recursive call on weather we are in check or not
+			 */
+			if(board.getPlayer().equals(getPlayer()))
+				rules.cantCheckSelf(newPosition, board);
 		} catch (UnsupportedOperationException e) {
 			return false;
 		}

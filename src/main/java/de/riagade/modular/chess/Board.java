@@ -59,6 +59,7 @@ public class Board {
 		alterCastlingOptions(piece);
 		piece.setPosition(newPosition);
 		setPlayer(getPlayer().next());
+		setMoves(getMoves() + 1);
 	}
 
 	private void alterCastlingOptions(Piece piece) {
@@ -169,7 +170,7 @@ public class Board {
 	}
 
 	public List<BoardPosition> getAvailableMoves(List<Piece> pieces) {
-		return pieces.parallelStream()
+		return pieces.stream()
 				.map(p -> p.getPossibleMoves(this))
 				.flatMap(List::stream)
 				.toList();
@@ -192,7 +193,7 @@ public class Board {
 	public boolean isStaleMate() {
 		var myPieces = getPieces(getPlayer());
 		var myMoves = getAvailableMoves(myPieces);
-		return !isCheck() && myMoves.isEmpty();
+		return myMoves.isEmpty();
 	}
 
 	public Player getWinner() {

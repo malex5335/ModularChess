@@ -86,7 +86,11 @@ public class FenUtil {
 	}
 
 	private static void setMovesFromFen(Board board, String moves) {
-		board.setMoves(Integer.parseInt(moves));
+		try {
+			board.setMoves(Math.max(1, Integer.parseInt(moves)));
+		} catch (NumberFormatException e) {
+			board.setMoves(1);
+		}
 	}
 
 	private static int count(String str, char c) {

@@ -31,6 +31,7 @@ public interface BaseGame {
 			}
 			getBoard().move(actualPiece, to);
 		}
+		updateBoard();
 		return getBoard().getWinner();
 	}
 

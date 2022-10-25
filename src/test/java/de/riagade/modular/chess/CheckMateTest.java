@@ -7,6 +7,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CheckMateTest {
 
 	@Test
+	void roundStart() {
+		// Given
+		var board = new Board();
+
+		// When
+		var checkMated = board.isCheckMate();
+
+		// Then
+		assertFalse(checkMated);
+	}
+
+	@Test
 	void whiteInCheckMate() {
 		// Given
 		var fen = "8/8/8/8/8/1qb6/8/K7 w - - 0 1";

@@ -7,6 +7,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CheckTest {
 
 	@Test
+	void roundStart() {
+		// Given
+		var board = new Board();
+
+		// When
+		var checked = board.isCheck();
+
+		// Then
+		assertFalse(checked);
+	}
+
+	@Test
 	void whiteInCheck() {
 		// Given
 		var fen = "8/8/8/8/8/2q6/8/K7 w - - 0 1";

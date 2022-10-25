@@ -15,11 +15,13 @@ public interface Piece {
 
 	Player getPlayer();
 
-	boolean canMove(BoardPosition newPosition, Board board);
+	default boolean canMove(BoardPosition newPosition, Board board) {
+		return getPossibleMoves(board).contains(newPosition);
+	}
 
 	default List<BoardPosition> getPossibleMoves(Board board) {
 		var positions = board.getAllPositions();
-		return positions.parallelStream()
+		return positions.stream()
 				.filter(bp -> canMove(bp, board))
 				.collect(Collectors.toList());
 	}

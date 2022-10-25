@@ -51,6 +51,8 @@ public class ConsoleGame implements BaseGame {
 		}
 		stringBuilder.append("\n   A B C D E F G H");
 		System.out.println(stringBuilder);
+		if(board.isCheck())
+			System.out.println("Check, you need to save your King!");
 	}
 
 	@Override
