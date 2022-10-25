@@ -26,11 +26,31 @@ public class King implements Piece {
 		var rules = new KingRules(this);
 		try {
 			notOccupiedByOwnPiece(newPosition, board, getPlayer());
-			rules.onlyOneField(newPosition);
+			try {
+				rules.onlyOneField(newPosition);
+			} catch (UnsupportedOperationException e) {
+				if(!isCastling(newPosition, board))
+					throw e;
+			}
 			notOccupied(shortestPathBetween(getPosition(), newPosition), board);
 		} catch (UnsupportedOperationException e) {
 			return false;
 		}
 		return true;
+	}
+
+	private boolean isCastling(BoardPosition newPosition, Board board) {
+		var castlingOptions = board.getCastling().getCastlingOptions().get(getPlayer());
+		if(castlingOptions.equals(CastlingOptions.NONE))
+			return false;
+		if(getPosition().y() - newPosition.y() != 0)
+			return false;
+		if(castlingOptions.equals(CastlingOptions.KING))
+			return newPosition.x() == getPosition().x() + 2;
+		if(castlingOptions.equals(CastlingOptions.QUEEN))
+			return newPosition.x() == getPosition().x() - 2;
+		if(castlingOptions.equals(CastlingOptions.BOTH))
+			return Math.abs(getPosition().x() - newPosition.x()) == 2;
+		return false;
 	}
 }

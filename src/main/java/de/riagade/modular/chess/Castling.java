@@ -13,7 +13,7 @@ public class Castling {
 
     public Castling() {
         setCastlingOptions(new HashMap<>());
-        getCastlingOptions().put(Player.WHITE, CastlingOptions.BOTH);
-        getCastlingOptions().put(Player.BLACK, CastlingOptions.BOTH);
+        getCastlingOptions().put(Player.WHITE, CastlingOptions.NONE);
+        getCastlingOptions().put(Player.BLACK, CastlingOptions.NONE);
     }
 }

@@ -11,7 +11,6 @@ import static de.riagade.modular.chess.util.FenUtil.*;
 @Getter
 @Setter
 public class Board {
-	public static final String INITIAL_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	private List<Piece> pieces = new ArrayList<>();
 	private int halfMoves;
 	private int moves;
@@ -21,7 +20,7 @@ public class Board {
 	private List<BoardPosition> allPositions;
 
 	public Board() {
-		this(INITIAL_FEN);
+		this(DEFAULT_FEN);
 	}
 
 	public Board(String fen) {
@@ -56,8 +55,58 @@ public class Board {
 		if(!piece.getPossibleMoves(this).contains(newPosition))
 			throw new UnsupportedOperationException("piece cannot be moved to this position");
 		runTakeLogic(newPosition);
+		runCastlingLogic(piece, newPosition);
 		piece.setPosition(newPosition);
 		setPlayer(getPlayer().next());
+	}
+
+	private void runCastlingLogic(Piece piece, BoardPosition newPosition) {
+		var pieceType = piece.getPieceType();
+		if(!(PieceType.KING_B.equals(pieceType) ||
+				PieceType.KING_W.equals(pieceType)))
+			return;
+		var options = getCastling().getCastlingOptions().get(getPlayer());
+		if(options.equals(CastlingOptions.NONE))
+			return;
+		if(!directionAllowed(piece.getPosition(), newPosition, options))
+			return;
+		castleRookNextTo(newPosition);
+	}
+
+	private void castleRookNextTo(BoardPosition kingPosition) {
+		var rookType = getPlayer().equals(Player.WHITE) ? PieceType.ROOK_W : PieceType.ROOK_B;
+		var positions = getPositions(rookType);
+		if(positions.isEmpty())
+			return;
+		var rook = getClosestOnX(positions, kingPosition);
+		var rookX = rook.getPosition().x();
+		var kingX = kingPosition.x();
+		var kingY = kingPosition.y();
+		if(rookX > kingX) {
+			rookX = (char) (kingX-1);
+		} else {
+			rookX = (char) (kingX+1);
+		}
+		move(rook, new BoardPosition(rookX, kingY));
+	}
+
+	public Piece getClosestOnX(List<BoardPosition> positions, BoardPosition targetPosition) {
+		positions.sort(Comparator.comparingInt(a -> Math.abs(a.x() - targetPosition.x())));
+		var closestPosition = positions.get(0);
+		return getPiece(closestPosition).orElseThrow();
+	}
+
+	private boolean directionAllowed(BoardPosition from, BoardPosition to, CastlingOptions castlingOptions) {
+		var directionX = to.x() - from.x();
+		var directionY = to.y() - from.y();
+		if(directionY != 0)
+			return false;
+		return switch (castlingOptions){
+			case KING -> directionX > 0;
+			case QUEEN -> directionX < 0;
+			case BOTH -> directionX != 0;
+			default -> false;
+		};
 	}
 
 	private void runTakeLogic(BoardPosition newPosition) {

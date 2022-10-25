@@ -3,7 +3,10 @@ package de.riagade.modular.chess.util;
 import de.riagade.modular.chess.*;
 import de.riagade.modular.chess.pieces.util.*;
 
+import java.util.function.*;
+
 public class FenUtil {
+	public static final String DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	public static final char FEN_PART_SPLITTER = ' ';
 	public static final char FEN_ROW_SPLITTER = '/';
 
@@ -50,6 +53,24 @@ public class FenUtil {
 	}
 
 	private static void setCastlingFromFen(Board board, String castling) {
+		board.setCastling(new Castling());
+		var options = board.getCastling().getCastlingOptions();
+		var whiteOptions = findCharacteristicOptions(castling, Character::isUpperCase);
+		if(!whiteOptions.isEmpty())
+			options.put(Player.WHITE, CastlingOptions.fromValue(whiteOptions));
+		var blackOptions = findCharacteristicOptions(castling, Character::isLowerCase);
+		if(!blackOptions.isEmpty())
+			options.put(Player.BLACK, CastlingOptions.fromValue(blackOptions));
+	}
+
+	private static String findCharacteristicOptions(String castling, IntPredicate function) {
+		return castling
+				.chars()
+				.filter(function)
+				.collect(StringBuilder::new,
+						StringBuilder::appendCodePoint,
+						StringBuilder::append)
+				.toString();
 	}
 
 	private static void setEnPassantFromFen(Board board, String enPassant) {
