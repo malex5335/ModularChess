@@ -4,6 +4,7 @@ import de.riagade.modular.chess.*;
 import de.riagade.modular.chess.pieces.*;
 import lombok.*;
 
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.notOccupied;
 import static de.riagade.modular.chess.util.PositionUtil.*;
 
 @Getter
@@ -28,26 +29,10 @@ public class PawnRules {
 			throw new UnsupportedOperationException("not allowed to move backwards");
 	}
 
-	public void noMoreThanTwo(BoardPosition newPosition) throws UnsupportedOperationException {
-		var steps = yStepsBetween(getPosition(), newPosition, getPlayer());
-		if(steps > 2)
-			throw new UnsupportedOperationException("can't move more than 2 spaces at once");
-	}
-
-	public void jumpOnlyFistTime(BoardPosition newPosition) throws UnsupportedOperationException {
-		var steps = yStepsBetween(getPosition(), newPosition, getPlayer());
-		var fromY = getPosition().y();
-		var firstTimeMove = switch (getPlayer()) {
-			case WHITE -> fromY == 2;
-			case BLACK -> fromY == 7;
-			default -> throw new UnsupportedOperationException("can not check if no player is active");
-		};
-		if(steps >= 2 && !firstTimeMove)
-			throw new UnsupportedOperationException("can only move 2 spaces on the first move");
-	}
-
 	public boolean regularTake(Board board, BoardPosition newPosition) throws UnsupportedOperationException {
-		if(!movesDiagonal(getPosition(), newPosition))
+		var distanceX = Math.abs(getPosition().x() - newPosition.x());
+		var distanceY = Math.abs(getPosition().x() - newPosition.x());
+		if(!(distanceX == distanceY && distanceX == 1))
 			return false;
 		var optionalEncounter = board.getPiece(newPosition);
 		if(optionalEncounter.isPresent()) {
@@ -67,8 +52,32 @@ public class PawnRules {
 		return correctMoveDirection && correctField && isNextTo(getPosition(), newPosition);
 	}
 
-	public void dontAllowDiagonalMovement(BoardPosition newPosition) throws UnsupportedOperationException {
-		if(movesDiagonal(getPosition(), newPosition))
-			throw new UnsupportedOperationException("cannot move diagonally");
+	public void dontAllowHorizontalMovement(BoardPosition newPosition) throws UnsupportedOperationException {
+		if(getPosition().x() != newPosition.x())
+			throw new UnsupportedOperationException("cannot move horizontal");
+	}
+
+	public void xDistanceMax(BoardPosition newPosition) {
+		var distance = xStepsBetween(getPosition(), newPosition);
+		if(distance > 1)
+			throw new UnsupportedOperationException("cannot move more than 1 field horizontal");
+	}
+
+	public void yDistanceMax(BoardPosition newPosition, Board board) {
+		var distance = yStepsBetween(getPosition(), newPosition, getPlayer());
+		var fromY = getPosition().y();
+		var firstTimeMove = switch (getPlayer()) {
+			case WHITE -> fromY == 2;
+			case BLACK -> fromY == 7;
+			default -> throw new UnsupportedOperationException("can not check if no player is active");
+		};
+		if(firstTimeMove && isOccupied(new BoardPosition(getPosition().x(), getPosition().y() + getPlayerDirection(getPlayer())), board))
+			throw new UnsupportedOperationException("space is occupied, cannot move there");
+		if(firstTimeMove ? distance > 2 : distance > 1)
+			throw new UnsupportedOperationException(String.format("cannot move %d field/s vertical from here", distance));
+	}
+
+	private boolean isOccupied(BoardPosition position, Board board) {
+		return board.getPiece(position).isPresent();
 	}
 }

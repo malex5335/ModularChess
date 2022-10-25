@@ -6,7 +6,7 @@ public class GuiGame implements BaseGame {
 	Board board = new Board();
 
 	public static void main(String[] args) {
-		new GuiGame().runGame();
+		var winner = new GuiGame().runGame();
 	}
 
 	@Override

@@ -55,7 +55,7 @@ public class ConsoleGame implements BaseGame {
 
 	@Override
 	public void noPieceSelectedError() {
-		System.out.println("that's not a piece...");
+		System.out.println("That's not a piece...");
 	}
 
 	@Override
@@ -65,6 +65,6 @@ public class ConsoleGame implements BaseGame {
 
 	@Override
 	public void moveNotPossibleError() {
-		System.out.println("move is not possible!");
+		System.out.println("That move is not possible!");
 	}
 }

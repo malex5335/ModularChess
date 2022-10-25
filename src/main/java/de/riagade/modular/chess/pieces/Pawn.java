@@ -5,7 +5,8 @@ import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
-import static de.riagade.modular.chess.pieces.rules.GeneralRules.notOccupiedByOwnPiece;
+import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
+import static de.riagade.modular.chess.util.PositionUtil.shortestPathBetween;
 
 @Getter
 @Setter
@@ -25,11 +26,11 @@ public class Pawn implements Piece {
 		var rules = new PawnRules(this);
 		try {
 			notOccupiedByOwnPiece(newPosition, board, getPlayer());
+			rules.xDistanceMax(newPosition);
+			rules.yDistanceMax(newPosition, board);
 			rules.neverMoveBackwards(newPosition);
-			rules.noMoreThanTwo(newPosition);
-			rules.jumpOnlyFistTime(newPosition);
 			if(!rules.regularTake(board, newPosition) && !rules.isEnPassant(board, newPosition))
-				rules.dontAllowDiagonalMovement(newPosition);
+				rules.dontAllowHorizontalMovement(newPosition);
 		} catch (UnsupportedOperationException e) {
 			return false;
 		}

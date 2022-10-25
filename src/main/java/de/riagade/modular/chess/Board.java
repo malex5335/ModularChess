@@ -147,21 +147,55 @@ public class Board {
 		}
 	}
 
-	public boolean isCheckMate() {
-		// TODO: ...
-		return false;
+	public boolean isCheckAt(BoardPosition position) {
+		var nextPlayer = getPlayer().next();
+		var allEnemyPieces = getPieces(nextPlayer);
+		var enemyMoves = getAvailableMoves(allEnemyPieces);
+		return enemyMoves.contains(position);
+	}
+
+	private Piece getKing(Player player) {
+		return getPieces(player).stream()
+				.filter(p -> p.getPieceType().equals(PieceType.KING_W) ||
+						p.getPieceType().equals(PieceType.KING_B))
+				.findFirst()
+				.orElseThrow(() -> new UnsupportedOperationException("could not find a King for this player"));
+	}
+
+	public List<Piece> getPieces(Player player) {
+		return getPieces().stream()
+				.filter(p -> p.getPlayer().equals(player))
+				.toList();
+	}
+
+	public List<BoardPosition> getAvailableMoves(List<Piece> pieces) {
+		return pieces.parallelStream()
+				.map(p -> p.getPossibleMoves(this))
+				.flatMap(List::stream)
+				.toList();
+	}
+
+	public boolean isGameOver() {
+		return isCheckMate() || isStaleMate();
 	}
 
 	public boolean isCheck() {
-		// TODO: ...
-		return false;
+		var myKing = getKing(getPlayer());
+		return isCheckAt(myKing.getPosition());
+	}
+
+	public boolean isCheckMate() {
+		var myKing = getKing(getPlayer());
+		return isCheck() && myKing.getPossibleMoves(this).isEmpty();
 	}
 
 	public boolean isStaleMate() {
-		return false;
+		var myPieces = getPieces(getPlayer());
+		var myMoves = getAvailableMoves(myPieces);
+		return !isCheck() && myMoves.isEmpty();
 	}
 
 	public Player getWinner() {
-		return getPlayer();
+		return isCheckMate() ? getPlayer().next() : Player.NO_ONE;
 	}
 }

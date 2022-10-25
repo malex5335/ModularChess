@@ -12,7 +12,7 @@ public interface BaseGame {
 	 * in order to have a great game experience
 	 */
 	default Player runGame() {
-		while(!getBoard().isCheckMate()) {
+		while(!getBoard().isGameOver()) {
 			updateBoard();
 			var optionalPiece = getBoard().getPiece(getFrom());
 			if(optionalPiece.isEmpty()) {

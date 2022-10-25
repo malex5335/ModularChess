@@ -19,7 +19,7 @@ public interface Piece {
 
 	default List<BoardPosition> getPossibleMoves(Board board) {
 		var positions = board.getAllPositions();
-		return positions.stream()
+		return positions.parallelStream()
 				.filter(bp -> canMove(bp, board))
 				.collect(Collectors.toList());
 	}
