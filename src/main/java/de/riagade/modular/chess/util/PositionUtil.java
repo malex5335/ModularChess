@@ -27,6 +27,7 @@ public class PositionUtil {
 		return switch (player) {
 			case WHITE -> 1;
 			case BLACK -> -1;
+			default -> throw new UnsupportedOperationException("can not check if no player is active");
 		};
 	}
 

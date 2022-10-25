@@ -22,6 +22,7 @@ public class PawnRules {
 		var rightDirection = switch(getPlayer()) {
 			case WHITE -> fromY < toY;
 			case BLACK -> fromY > toY;
+			default -> throw new UnsupportedOperationException("can not check if no player is active");
 		};
 		if(!rightDirection)
 			throw new UnsupportedOperationException("not allowed to move backwards");
@@ -39,6 +40,7 @@ public class PawnRules {
 		var firstTimeMove = switch (getPlayer()) {
 			case WHITE -> fromY == 2;
 			case BLACK -> fromY == 7;
+			default -> throw new UnsupportedOperationException("can not check if no player is active");
 		};
 		if(steps >= 2 && !firstTimeMove)
 			throw new UnsupportedOperationException("can only move 2 spaces on the first move");

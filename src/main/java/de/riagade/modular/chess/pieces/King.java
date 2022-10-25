@@ -5,6 +5,8 @@ import de.riagade.modular.chess.pieces.rules.*;
 import de.riagade.modular.chess.pieces.util.*;
 import lombok.*;
 
+import java.util.ArrayList;
+
 import static de.riagade.modular.chess.pieces.rules.GeneralRules.*;
 import static de.riagade.modular.chess.util.PositionUtil.*;
 
@@ -45,12 +47,29 @@ public class King implements Piece {
 			return false;
 		if(getPosition().y() - newPosition.y() != 0)
 			return false;
-		if(castlingOptions.equals(CastlingOptions.KING))
-			return newPosition.x() == getPosition().x() + 2;
-		if(castlingOptions.equals(CastlingOptions.QUEEN))
-			return newPosition.x() == getPosition().x() - 2;
-		if(castlingOptions.equals(CastlingOptions.BOTH))
-			return Math.abs(getPosition().x() - newPosition.x()) == 2;
+
+		var optionList = new ArrayList<>();
+		if(castlingOptions.equals(CastlingOptions.BOTH)) {
+			optionList.add(CastlingOptions.KING);
+			optionList.add(CastlingOptions.QUEEN);
+		} else {
+			optionList.add(castlingOptions);
+		}
+
+		if(optionList.contains(CastlingOptions.KING))
+			try {
+				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('A', getPosition().y())), board);
+				return true;
+			} catch (UnsupportedOperationException e) {
+				return false;
+			}
+		if(optionList.contains(CastlingOptions.QUEEN))
+			try {
+				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('H', getPosition().y())), board);
+				return true;
+			} catch (UnsupportedOperationException e) {
+				return false;
+			}
 		return false;
 	}
 }

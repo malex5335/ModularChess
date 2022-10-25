@@ -671,6 +671,7 @@ public class PieceMovementTest {
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
 					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 
 				@Test
@@ -689,6 +690,7 @@ public class PieceMovementTest {
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
 					var rook2 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 			}
 
@@ -713,9 +715,10 @@ public class PieceMovementTest {
 					// Then
 					assertEquals(from, king.getPosition());
 					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
-					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 
 				@Test
@@ -731,9 +734,10 @@ public class PieceMovementTest {
 					// Then
 					assertEquals(from, king.getPosition());
 					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
-					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 			}
 
@@ -758,9 +762,10 @@ public class PieceMovementTest {
 					// Then
 					assertEquals(from, king.getPosition());
 					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
-					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.BOTH, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 
 				@Test
@@ -776,9 +781,10 @@ public class PieceMovementTest {
 					// Then
 					assertEquals(from, king.getPosition());
 					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
-					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.BOTH, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
 			}
 		}

@@ -56,8 +56,31 @@ public class Board {
 			throw new UnsupportedOperationException("piece cannot be moved to this position");
 		runTakeLogic(newPosition);
 		runCastlingLogic(piece, newPosition);
+		alterCastlingOptions(piece);
 		piece.setPosition(newPosition);
 		setPlayer(getPlayer().next());
+	}
+
+	private void alterCastlingOptions(Piece piece) {
+		var castlingOptions = getCastling().getCastlingOptions();
+		var optionBefore = castlingOptions.get(getPlayer());
+		if(optionBefore.equals(CastlingOptions.NONE))
+			return;
+		var newOption = switch (piece.getPieceType()) {
+			case KING_W, KING_B -> CastlingOptions.NONE;
+			case ROOK_W, ROOK_B -> getOtherSide(piece);
+			default -> optionBefore;
+		};
+		castlingOptions.put(getPlayer(), newOption);
+	}
+
+	private CastlingOptions getOtherSide(Piece piece) {
+		var leftSide = new BoardPosition((char) (piece.getPosition().x() - 1), piece.getPosition().y());
+		var otherSide = CastlingOptions.KING;
+		if(getAllPositions().contains(leftSide)) {
+			otherSide = CastlingOptions.QUEEN;
+		}
+		return otherSide;
 	}
 
 	private void runCastlingLogic(Piece piece, BoardPosition newPosition) {
@@ -87,7 +110,7 @@ public class Board {
 		} else {
 			rookX = (char) (kingX+1);
 		}
-		move(rook, new BoardPosition(rookX, kingY));
+		rook.setPosition(new BoardPosition(rookX, kingY));
 	}
 
 	public Piece getClosestOnX(List<BoardPosition> positions, BoardPosition targetPosition) {
