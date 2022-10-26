@@ -2,6 +2,8 @@ package de.riagade.modular.chess.console;
 
 import de.riagade.modular.chess.*;
 
+import java.util.Collections;
+
 import static de.riagade.modular.chess.console.ConsoleUtil.*;
 
 public class ConsoleGame implements BaseGame {
@@ -35,7 +37,7 @@ public class ConsoleGame implements BaseGame {
 	public void updateBoard() {
 		var stringBuilder = new StringBuilder();
 		var background = DARK_BACKGROUND;
-		getBoard().getAllPositions().sort(ConsoleUtil::sortList);
+		Collections.sort(getBoard().getAllPositions());
 		for(var position : getBoard().getAllPositions()) {
 			if(position.x() == 'A') {
 				background = nextBackGround(background);

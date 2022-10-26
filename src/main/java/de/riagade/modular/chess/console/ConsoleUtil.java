@@ -14,12 +14,6 @@ public class ConsoleUtil {
 		return String.valueOf(value);
 	}
 
-	public static int sortList(BoardPosition me, BoardPosition they) {
-		var compareY = they.y() - me.y();
-		var compareX = me.x() - they.x();
-		return compareY * 100 + compareX;
-	}
-
 	public static String nextBackGround(String background) {
 		return switch (background) {
 			case DARK_BACKGROUND -> LIGHT_BACKGROUND;
