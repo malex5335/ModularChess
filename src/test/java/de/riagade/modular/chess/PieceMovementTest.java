@@ -849,6 +849,27 @@ public class PieceMovementTest {
 					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
 					assertEquals(CastlingOptions.BOTH, board.getCastling().getCastlingOptions().get(Player.WHITE));
 				}
+
+				@Test
+				void king_is_checked() {
+					// Given
+					var fen = "8/8/8/8/8/8/3p4/R3K2R w KQkq - 0 1";
+					board = new Board(fen);
+					from = new BoardPosition('E', 1);
+					var to = new BoardPosition('C', 1);
+					var king = board.getPiece(from).orElseThrow();
+
+					// When
+					assertThrows(UnsupportedOperationException.class, () -> board.move(king, to));
+
+					// Then
+					assertEquals(from, king.getPosition());
+					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.BOTH, board.getCastling().getCastlingOptions().get(Player.WHITE));
+				}
 			}
 		}
 	}

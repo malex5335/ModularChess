@@ -40,6 +40,8 @@ public class KingRules {
 	}
 
 	private boolean isCastling(BoardPosition newPosition, Board board) {
+		if(board.isCheck())
+			return false;
 		var castlingOptions = board.getCastling().getCastlingOptions().get(getPlayer());
 		if(castlingOptions.equals(CastlingOptions.NONE))
 			return false;
