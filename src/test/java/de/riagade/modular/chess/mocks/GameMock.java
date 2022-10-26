@@ -11,15 +11,15 @@ import java.util.*;
 @Setter
 public class GameMock implements BaseGame {
 	Board board;
-	int counter;
-	List<Movement> movements;
+	int moveNumber;
+	List<Movement> moves;
 	public record Movement(BoardPosition from, BoardPosition to){}
 	long millisDuration;
 
 	public GameMock() {
 		setBoard(new Board());
-		setCounter(-1);
-		setMovements(new LinkedList<>());
+		setMoveNumber(0);
+		setMoves(new LinkedList<>());
 		setMillisDuration(0);
 	}
 
@@ -44,7 +44,7 @@ public class GameMock implements BaseGame {
 
 	@Override
 	public void updateBoard() {
-		setCounter(getCounter() + 1);
+		setMoveNumber(getMoveNumber() + 1);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class GameMock implements BaseGame {
 	}
 
 	private Movement getCurrentMovement() {
-		return getMovements().get(getCounter());
+		return getMoves().get(getMoveNumber()-1);
 	}
 
 	private String toString(BoardPosition position) {

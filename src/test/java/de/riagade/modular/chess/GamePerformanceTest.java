@@ -15,7 +15,7 @@ class GamePerformanceTest {
 	@BeforeEach
 	void setup() {
 		game = new GameMock();
-		moves = game.getMovements();
+		moves = game.getMoves();
 	}
 
 	@Test
