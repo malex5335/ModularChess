@@ -811,6 +811,27 @@ public class PieceMovementTest {
 				}
 
 				@Test
+				void too_long_castle() {
+					// Given
+					var fen = "8/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
+					board = new Board(fen);
+					from = new BoardPosition('E', 1);
+					var to = new BoardPosition('B', 1);
+					var king = board.getPiece(from).orElseThrow();
+
+					// When
+					assertThrows(UnsupportedOperationException.class, () -> board.move(king, to));
+
+					// Then
+					assertEquals(from, king.getPosition());
+					var rook1 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.BOTH, board.getCastling().getCastlingOptions().get(Player.WHITE));
+				}
+
+				@Test
 				void short_castle() {
 					// Given
 					from = new BoardPosition('E', 1);

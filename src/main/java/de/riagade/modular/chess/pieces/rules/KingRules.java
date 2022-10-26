@@ -45,6 +45,8 @@ public class KingRules {
 			return false;
 		if(getPosition().y() - newPosition.y() != 0)
 			return false;
+		if(Math.abs(getPosition().x() - newPosition.x()) != 2)
+			return false;
 
 		var optionList = new ArrayList<>();
 		if(castlingOptions.equals(CastlingOptions.BOTH)) {
@@ -58,16 +60,12 @@ public class KingRules {
 			try {
 				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('H', getPosition().y())), board);
 				return true;
-			} catch (UnsupportedOperationException e) {
-				System.out.println("King-Castling can not be performed");
-			}
+			} catch (UnsupportedOperationException ignored) {}
 		if(optionList.contains(CastlingOptions.QUEEN))
 			try {
 				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('A', getPosition().y())), board);
 				return true;
-			} catch (UnsupportedOperationException e) {
-				System.out.println("Queen-Castling can not be performed");
-			}
+			} catch (UnsupportedOperationException ignored) {}
 		return false;
 	}
 }
