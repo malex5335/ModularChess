@@ -1,5 +1,8 @@
 package de.riagade.modular.chess;
 
+import lombok.Getter;
+
+@Getter
 public enum Player {
 	WHITE('w'), BLACK('b'), NO_ONE('x');
 
