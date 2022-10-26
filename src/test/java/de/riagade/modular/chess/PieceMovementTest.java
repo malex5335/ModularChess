@@ -651,7 +651,7 @@ public class PieceMovementTest {
 			class Allowed {
 				@BeforeEach
 				void setup() {
-					var fen = "8/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
+					var fen = "8/8/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1";
 					board = new Board(fen);
 				}
 
@@ -675,8 +675,50 @@ public class PieceMovementTest {
 				}
 
 				@Test
+				void long_castle_trapped() {
+					// Given
+					var fen = "8/8/8/8/8/8/PPPPPPPP/R3KBNR w KQkq - 0 1";
+					board = new Board(fen);
+					from = new BoardPosition('E', 1);
+					var to = new BoardPosition('C', 1);
+					var king = board.getPiece(from).orElseThrow();
+
+					// When
+					board.move(king, to);
+
+					// Then
+					assertEquals(to, king.getPosition());
+					var rook1 = board.getPiece(new BoardPosition('D', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('H', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
+				}
+
+				@Test
 				void short_castle() {
 					// Given
+					from = new BoardPosition('E', 1);
+					var to = new BoardPosition('G', 1);
+					var king = board.getPiece(from).orElseThrow();
+
+					// When
+					board.move(king, to);
+
+					// Then
+					assertEquals(to, king.getPosition());
+					var rook1 = board.getPiece(new BoardPosition('F', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook1.getPieceType());
+					var rook2 = board.getPiece(new BoardPosition('A', 1)).orElseThrow();
+					assertEquals(PieceType.ROOK_W, rook2.getPieceType());
+					assertEquals(CastlingOptions.NONE, board.getCastling().getCastlingOptions().get(Player.WHITE));
+				}
+
+				@Test
+				void short_castle_trapped() {
+					// Given
+					var fen = "8/8/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1";
+					board = new Board(fen);
 					from = new BoardPosition('E', 1);
 					var to = new BoardPosition('G', 1);
 					var king = board.getPiece(from).orElseThrow();

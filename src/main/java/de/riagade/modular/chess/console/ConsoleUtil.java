@@ -6,8 +6,12 @@ import de.riagade.modular.chess.pieces.util.*;
 import java.util.*;
 
 public class ConsoleUtil {
-	public static final String DARK_BACKGROUND = "#";
-	public static final String LIGHT_BACKGROUND = "_";
+
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String BLACK_PIECE = "\u001B[31m%s" + ANSI_RESET;
+	public static final String WHITE_PIECE = "\u001B[32m%s" + ANSI_RESET;
+	public static final String DARK_BACKGROUND = "\u001B[30m%s" + ANSI_RESET;
+	public static final String LIGHT_BACKGROUND = "\u001B[47m%s" + ANSI_RESET;
 
 	public static String getOutput(Piece piece) {
 		var value = piece.getPieceType().getValue();

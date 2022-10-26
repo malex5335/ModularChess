@@ -56,17 +56,17 @@ public class KingRules {
 
 		if(optionList.contains(CastlingOptions.KING))
 			try {
-				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('A', getPosition().y())), board);
-				return true;
-			} catch (UnsupportedOperationException e) {
-				return false;
-			}
-		if(optionList.contains(CastlingOptions.QUEEN))
-			try {
 				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('H', getPosition().y())), board);
 				return true;
 			} catch (UnsupportedOperationException e) {
-				return false;
+				System.out.println("King-Castling can not be performed");
+			}
+		if(optionList.contains(CastlingOptions.QUEEN))
+			try {
+				notOccupied(shortestPathBetween(getPosition(), new BoardPosition('A', getPosition().y())), board);
+				return true;
+			} catch (UnsupportedOperationException e) {
+				System.out.println("Queen-Castling can not be performed");
 			}
 		return false;
 	}

@@ -13,7 +13,12 @@ public class ConsoleGame implements BaseGame {
 	public static void main(String[] args) {
 		var winner = new ConsoleGame().runGame();
 		System.out.println("Game is over.");
-		System.out.printf("%s won the game.", winner);
+		var winnerName = switch (winner) {
+			case WHITE -> String.format(WHITE_PIECE, winner);
+			case BLACK -> String.format(BLACK_PIECE, winner);
+			default -> winner.toString();
+		};
+		System.out.printf("%s won the game.", winnerName);
 	}
 
 	@Override
@@ -44,11 +49,18 @@ public class ConsoleGame implements BaseGame {
 				stringBuilder.append("\n");
 				stringBuilder.append(String.format("%d |", position.y()));
 			}
-			var output = background;
+			var output = " ";
 			var piece = getBoard().getPiece(position);
-			if(piece.isPresent())
-				output = ConsoleUtil.getOutput(piece.get());
-			stringBuilder.append(String.format("%s|", output));
+			if(piece.isPresent()) {
+				var actualPiece = piece.get();
+				output = ConsoleUtil.getOutput(actualPiece);
+				if(actualPiece.getPlayer().equals(Player.WHITE)) {
+					output = String.format(WHITE_PIECE, output);
+				} else {
+					output = String.format(BLACK_PIECE, output);
+				}
+			}
+			stringBuilder.append(String.format("%s|", String.format(background, output)));
 			background = nextBackGround(background);
 		}
 		stringBuilder.append("\n   A B C D E F G H");
@@ -70,5 +82,10 @@ public class ConsoleGame implements BaseGame {
 	@Override
 	public void moveNotPossibleError() {
 		System.out.println("That move is not possible!");
+	}
+
+	@Override
+	public void wrongInputError() {
+		System.out.println("Can't validate your input");
 	}
 }

@@ -14,26 +14,31 @@ public interface BaseGame {
 	default Player runGame() {
 		while(!getBoard().isGameOver()) {
 			updateBoard();
-			var optionalPiece = getBoard().getPiece(getFrom());
-			if(optionalPiece.isEmpty()) {
-				noPieceSelectedError();
-				continue;
+			try {
+				var optionalPiece = getBoard().getPiece(getFrom());
+				if (optionalPiece.isEmpty()) {
+					noPieceSelectedError();
+					continue;
+				}
+				var actualPiece = optionalPiece.get();
+				if(!actualPiece.getPlayer().equals(getBoard().getPlayer())) {
+					wrongPlayerError();
+					continue;
+				}
+				var to = getTo();
+				if(!actualPiece.canMove(to, getBoard())){
+					moveNotPossibleError();
+					continue;
+				}
+				getBoard().move(actualPiece, to);
+			} catch (UnsupportedOperationException e) {
+				wrongInputError();
 			}
-			var actualPiece = optionalPiece.get();
-			if(!actualPiece.getPlayer().equals(getBoard().getPlayer())) {
-				wrongPlayerError();
-				continue;
-			}
-			var to = getTo();
-			if(!actualPiece.canMove(to, getBoard())){
-				moveNotPossibleError();
-				continue;
-			}
-			getBoard().move(actualPiece, to);
 		}
 		updateBoard();
 		return getBoard().getWinner();
 	}
+
 
 	/**
 	 * the current board with all it's positions
@@ -72,4 +77,9 @@ public interface BaseGame {
 	 * this will be executed if {@link #getTo()} refers to a {@link BoardPosition} this piece can not move to
 	 */
 	void moveNotPossibleError();
+
+	/**
+	 *  this will be executed if an input could not be validated
+	 */
+	void wrongInputError();
 }

@@ -68,4 +68,9 @@ public class GuiGame implements BaseGame {
 	public void moveNotPossibleError() {
 
 	}
+
+	@Override
+	public void wrongInputError() {
+
+	}
 }

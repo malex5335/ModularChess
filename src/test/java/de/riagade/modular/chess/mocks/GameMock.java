@@ -69,6 +69,11 @@ public class GameMock implements BaseGame {
 		throw new MoveNotPossibleException(String.format(message, toString(from), toString(to)));
 	}
 
+	@Override
+	public void wrongInputError() {
+		throw new WrongInputException("can't validate the input you've entered");
+	}
+
 	private Movement getCurrentMovement() {
 		return getMoves().get(getMoveNumber()-1);
 	}
