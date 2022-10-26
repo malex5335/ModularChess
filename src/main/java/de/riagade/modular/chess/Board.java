@@ -17,6 +17,7 @@ public class Board {
 	private Player player;
 	private Castling castling;
 	private BoardPosition enPassant;
+	private boolean castlingDisabled;
 	private List<BoardPosition> allPositions;
 
 	public Board() {
@@ -26,6 +27,7 @@ public class Board {
 	public Board(String fen) {
 		loadFenSettings(this, fen);
 		generatePositions();
+		setCastlingDisabled(false);
 	}
 
 	public void createPieceAt(PieceType pieceType, char x, int y) {
@@ -182,7 +184,9 @@ public class Board {
 
 	public boolean isCheck() {
 		var myKing = getKing(getPlayer());
-		return isCheckAt(myKing.getPosition());
+		var isChecked = isCheckAt(myKing.getPosition());
+		setCastlingDisabled(isChecked);
+		return isChecked;
 	}
 
 	public boolean isCheckMate() {

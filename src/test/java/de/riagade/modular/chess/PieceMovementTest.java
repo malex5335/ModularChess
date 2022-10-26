@@ -855,6 +855,7 @@ public class PieceMovementTest {
 					// Given
 					var fen = "8/8/8/8/8/8/3p4/R3K2R w KQkq - 0 1";
 					board = new Board(fen);
+					board.setCastlingDisabled(true);
 					from = new BoardPosition('E', 1);
 					var to = new BoardPosition('C', 1);
 					var king = board.getPiece(from).orElseThrow();

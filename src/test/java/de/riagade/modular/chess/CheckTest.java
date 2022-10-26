@@ -69,4 +69,9 @@ class CheckTest {
 		// Then
 		assertFalse(checked);
 	}
+
+	@Test
+	void needToGoOutOfCheckWithMovement() {
+
+	}
 }
