@@ -2,9 +2,6 @@ package de.riagade.modular.chess;
 
 import de.riagade.modular.chess.mocks.GameMock;
 import org.junit.jupiter.api.*;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class GamePerformanceTest {
 	GameMock game;
 	List<GameMock.Movement> moves;
-	static final long MAX_PERFORMANCE_MILLIS = TimeUnit.SECONDS.toMillis(1);
 
 	@BeforeEach
 	void setup() {
@@ -28,16 +24,14 @@ class GamePerformanceTest {
 		moves.add(toMovement("E2", "E4"));
 		moves.add(toMovement("F7", "F6"));
 		moves.add(toMovement("D1", "H5"));
-		var start = Instant.now();
+		var maxDuration = estimatedDuration(moves);
 
 		// When
 		var winner = game.runGame();
 
 		// Then
-		var end = Instant.now();
-		var duration = ChronoUnit.MILLIS.between(start, end);
 		assertEquals(Player.WHITE, winner);
-		assertTrue(duration <= MAX_PERFORMANCE_MILLIS);
+		assertTrue(game.getMillisDuration() <= maxDuration);
 	}
 
 	@Test
@@ -47,15 +41,22 @@ class GamePerformanceTest {
 		moves.add(toMovement("E7", "E5"));
 		moves.add(toMovement("G2", "G4"));
 		moves.add(toMovement("D8", "H4"));
-		var start = Instant.now();
+		var maxDuration = estimatedDuration(moves);
 
 		// When
 		var winner = game.runGame();
 
 		// Then
-		var end = Instant.now();
-		var duration = ChronoUnit.MILLIS.between(start, end);
 		assertEquals(Player.BLACK, winner);
-		assertTrue(duration <= MAX_PERFORMANCE_MILLIS);
+		assertTrue(game.getMillisDuration() <= maxDuration);
+	}
+
+	/**
+	 * we estimate a duration of 120ms per move as an indicator of "good performance"
+	 * @param moves the moves to count
+	 * @return the estimate in milliseconds
+	 */
+	public long estimatedDuration(List<GameMock.Movement> moves) {
+		return TimeUnit.MILLISECONDS.toMillis(120) * moves.size();
 	}
 }

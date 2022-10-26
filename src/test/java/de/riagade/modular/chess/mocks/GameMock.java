@@ -3,6 +3,8 @@ package de.riagade.modular.chess.mocks;
 import de.riagade.modular.chess.*;
 import lombok.*;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Getter
@@ -12,11 +14,22 @@ public class GameMock implements BaseGame {
 	int counter;
 	List<Movement> movements;
 	public record Movement(BoardPosition from, BoardPosition to){}
+	long millisDuration;
 
 	public GameMock() {
 		setBoard(new Board());
 		setCounter(-1);
 		setMovements(new LinkedList<>());
+		setMillisDuration(0);
+	}
+
+	@Override
+	public Player runGame() {
+		var start = Instant.now();
+		var winner = BaseGame.super.runGame();
+		var end = Instant.now();
+		setMillisDuration(ChronoUnit.MILLIS.between(start, end));
+		return winner;
 	}
 
 	@Override
